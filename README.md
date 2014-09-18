@@ -1,4 +1,4 @@
 ZSender
 =======
 
-Test network app winth sockets
+Test network app with sockets
