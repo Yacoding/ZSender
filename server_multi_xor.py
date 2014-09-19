@@ -5,7 +5,7 @@ import select
 import threading
 import string
 
-my_key = 'P@s$w0rD'
+my_key = 'ASD'
 
 # XOR
 def xor(string, key):
@@ -20,7 +20,7 @@ def xor(string, key):
 def broadcast(recv_socket , message , user):
     for sock in SOCKET_LIST:
         if sock != recv_socket:
-            print '[' + user + '] >> ' + message
+            print '[' + str(user) + '] >> ' + str(message)
             print 'broadcast...\n'
             sock.send(message)
 

@@ -4,14 +4,14 @@ import socket
 import thread
 import sys
 
-my_key = 'P@s$w0rD'
+my_key = 'ASD'
 
 # XOR
 def xor(string, key):
     data = ''
     for char in string:
         for ch in key:
-            char = ch(ord(char) ^ ord(ch))
+            char = chr(ord(char) ^ ord(ch))
         data += char
     return data
 
@@ -57,8 +57,8 @@ if __name__ == "__main__":
 
     print 'Connected to', ip, ':19999 [ ', sock_client.getsockname(), ' ]'
 
-    thread.start_new_thread(recv_data(), ())
-    thread.start_new_thread(send_data(), ())
+    thread.start_new_thread(recv_data, ())
+    thread.start_new_thread(send_data, ())
 
     try:
         while 1:
