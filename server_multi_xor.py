@@ -12,7 +12,7 @@ def xor(string, key):
     data = ''
     for char in string:
         for ch in key:
-            char = chr(ord(char)^ ord(ch))
+            char = chr(ord(char) ^ ord(ch))
         data += char
     return data
 
@@ -50,6 +50,7 @@ if __name__ == "__main__":
         read_socks, write_socks, err_socks = select.select(SOCKET_LIST, [], [])
 
         for rsocket in read_socks:
+
             if rsocket == sock_serv:
                 socket_conn, raddr = sock_serv.accept()
                 SOCKET_LIST.append(socket_conn)
@@ -58,19 +59,19 @@ if __name__ == "__main__":
                 try:
                     data = rsocket.recv(4096)
                 except:
-                    broadcast(socket, "== %s is offline ==" % str(rsocket.gethostname()), rsocket.gethostname())
-                    print "== %s is offline ==" % rsocket.gethostname()
+                    broadcast(rsocket, "== %s is offline ==" % str(rsocket.gethostname()), raddr)
+                    print "== %s is offline ==" % str(rsocket.gethostname())
                     rsocket.close()
                     SOCKET_LIST.remove(rsocket)
                     continue
 
                 if data:
                     if data == 'q':
-                        print "== %s is offline ==" % socket.gethostname()
+                        print "== %s is offline ==" % str(rsocket.gethostname())
                         rsocket.close()
                         SOCKET_LIST.remove(rsocket)
                     else:
-                        broadcast(rsocket, data, rsocket.gethostname())
+                        broadcast(rsocket, data, raddr)
 
     sock_serv.close()
 
