@@ -34,20 +34,19 @@ def recv_data():
 
 def send_data():
     while 1:
-        send_data=str(raw_input('>> '))
+        send_data = str(raw_input('>> '))
         if send_data == 'q':
             sock_client.send(send_data)
             thread.interrupt_main()
             break
         else:
-            sock_client = xor(sock_client, my_key)
+            send_data = xor(send_data, my_key)
             sock_client.send(send_data)
 
 if __name__ == "__main__":
 
     print '=== TCP CLIENT ==='
-
-    ip = str(raw_input('IP to connection: '))
+    ip = str(raw_input('\nIP to connection: '))
     user = str(raw_input('Username: '))
 
     print '\nClient: '
