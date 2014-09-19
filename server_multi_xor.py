@@ -24,9 +24,10 @@ def broadcast(recv_socket , message , user):
             print 'broadcast...\n'
             sock.send(message)
 
-
+# main
 if __name__ == "__main__":
 
+    #all conected sockets
     SOCKET_LIST = []
 
     print '=== TCP SERVER ===\n'
@@ -37,7 +38,7 @@ if __name__ == "__main__":
     print '\nServer:'
     sock_serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print '\t===created'
-    sock_serv.bind((ip, 9999))
+    sock_serv.bind((ip, 19999))
     print '\t===bind'
     ##sock_serv.bind((ip,port))
     sock_serv.listen(n_listen)
@@ -52,12 +53,12 @@ if __name__ == "__main__":
             if rsocket == sock_serv:
                 socket_conn, raddr = sock_serv.accept()
                 SOCKET_LIST.append(socket_conn)
-                print "== %s is offline ==" % socket.gethostname()
+                print "== %s is connected ==" % str(raddr)
             else:
                 try:
                     data = rsocket.recv(4096)
                 except:
-                    broadcast(socket, "== %s is offline ==" % rsocket.gethostname(), rsocket.gethostname())
+                    broadcast(socket, "== %s is offline ==" % str(rsocket.gethostname()), rsocket.gethostname())
                     print "== %s is offline ==" % rsocket.gethostname()
                     rsocket.close()
                     SOCKET_LIST.remove(rsocket)
