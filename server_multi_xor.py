@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     SOCKET_LIST.append(sock_serv)
     NAME_LIST.append('server')
-    NM_SK_DICT['server']=sock_serv
+    NM_SK_DICT['server'] = sock_serv
 
     while 1:
         read_socks, write_socks, err_socks = select.select(SOCKET_LIST, [], [])
@@ -62,26 +62,26 @@ if __name__ == "__main__":
                 NAME_LIST.append(username_d)
                 NM_SK_DICT[username_d] = socket_conn
 
-                print "=> (%s, %s): is connected" % raddr
+                print "=> (%s, %s): is connected" % rsocket
                 print "=> username: ", username_d
             else:
                 try:
                     data = rsocket.recv(4096)
                 except:
-                    mess = str("=> (%s, %s) disconnect" % raddr)
-                    broadcast(rsocket, mess, raddr)
-                    print "=> (%s, %s) disconnect" % raddr
+                    mess = str("=> (%s, %s) disconnect" % rsocket)
+                    broadcast(rsocket, mess, rsocket)
+                    print "=> (%s, %s) disconnect" % rsocket
                     rsocket.close()
                     SOCKET_LIST.remove(rsocket)
                     continue
 
                 if data:
                     if data == 'q':
-                        print "=> " + str(raddr) + ": exit"
+                        print "=> " + str(rsocket) + ": exit"
                         rsocket.close()
                         SOCKET_LIST.remove(rsocket)
                     else:
-                        broadcast(rsocket, data, raddr)
+                        broadcast(rsocket, data, rsocket)
 
     sock_serv.close()
 
