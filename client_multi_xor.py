@@ -44,7 +44,6 @@ def send_data():
             sock_client.send(send_data)
 
 def sended_data(send_data, do_crypt):
-    while 1:
         if do_crypt == False or not do_crypt:
             sock_client.send(send_data)
         elif do_crypt == True:
