@@ -28,9 +28,10 @@ def recv_data():
             thread.interrupt_main()
             break
         else:
-            print '\nNon decrypt: [ ' + recv_data + ' ]'
+            print '\nN << ', recv_data
             recv_data = xor(recv_data, my_key)
-            print '\nDecrypt: [ ', recv_data, ' ]'
+            print 'D << ', recv_data
+            sys.stdout.write('>> ')
 
 def send_data():
     while 1:

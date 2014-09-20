@@ -20,8 +20,7 @@ def xor(string, key):
 def broadcast(recv_socket , message , user):
     for sock in SOCKET_LIST:
         if sock != recv_socket and sock != sock_serv:
-            print '[' + str(user) + '] >> ' + message
-            print 'broadcast...\n'
+            print str(user) + ' >> [' + message + '] broadcast...\n'
             sock.send(message)
 
 # main
@@ -59,16 +58,16 @@ if __name__ == "__main__":
                 try:
                     data = rsocket.recv(4096)
                 except:
-                    mess = str("== (%s, %s) is offline ==" % rsocket.gethostname())
+                    mess = str("== (%s, %s) disconnect ==" % raddr)
                     broadcast(rsocket, mess, raddr)
-                    print "== (%s, %s) is offline ==" % rsocket.gethostname()
+                    print "== (%s, %s) disconnect ==" % raddr
                     rsocket.close()
                     SOCKET_LIST.remove(rsocket)
                     continue
 
                 if data:
                     if data == 'q':
-                        print "== (%s, %s) is offline ==" % rsocket.gethostname()
+                        print "== (%s, %s) exit ==" % raddr
                         rsocket.close()
                         SOCKET_LIST.remove(rsocket)
                     else:
