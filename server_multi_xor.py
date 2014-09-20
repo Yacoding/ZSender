@@ -18,7 +18,7 @@ def xor(string, key):
 def broadcast(recv_socket , message , user):
     for sock in SOCKET_LIST:
         if sock != recv_socket and sock != sock_serv:
-            print str(user) + ' >> [' + message + '] broadcast...\n'
+            print str(user) + ' >> [' + message + '] broadcast...'
             sock.send(message)
 
 # main
@@ -60,24 +60,24 @@ if __name__ == "__main__":
 
                 SOCKET_LIST.append(socket_conn)
                 NAME_LIST.append(username_d)
-                NM_SK_DICT[username_d]=socket_conn
+                NM_SK_DICT[username_d] = socket_conn
 
-                print "== (%s, %s): is connected ==" % raddr
-                print "username: ", str(NM_SK_DICT)
+                print "=> (%s, %s): is connected" % raddr
+                print "=> username: ", username_d
             else:
                 try:
                     data = rsocket.recv(4096)
                 except:
-                    mess = str("== (%s, %s) disconnect ==" % raddr)
+                    mess = str("=> (%s, %s) disconnect" % raddr)
                     broadcast(rsocket, mess, raddr)
-                    print "== (%s, %s) disconnect ==" % raddr
+                    print "=> (%s, %s) disconnect" % raddr
                     rsocket.close()
                     SOCKET_LIST.remove(rsocket)
                     continue
 
                 if data:
                     if data == 'q':
-                        print "== (%s, %s) exit ==" % raddr
+                        print "=> " + str(raddr) + ": exit"
                         rsocket.close()
                         SOCKET_LIST.remove(rsocket)
                     else:
