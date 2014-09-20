@@ -6,7 +6,6 @@ import sys
 
 my_key = 'ASD'
 
-# XOR
 def xor(string, key):
     data = ''
     for char in string:
@@ -44,12 +43,21 @@ def send_data():
             send_data = xor(send_data, my_key)
             sock_client.send(send_data)
 
+def sended_data(send_data, do_crypt):
+    while 1:
+        if do_crypt == False or not do_crypt:
+            sock_client.send(send_data)
+        elif do_crypt == True:
+            send_data = xor(send_data, my_key)
+            sock_client.send(send_data)
+
 if __name__ == "__main__":
 
     print '=== TCP CLIENT ==='
-    ip = str(raw_input('\nIP to connection: '))
-    user = str(raw_input('Username: '))
 
+    ip = '127.0.0.1'
+    ##ip = str(raw_input('\nIP to connection: '))
+    user = str(raw_input('Username: '))
     print '\nClient: '
     sock_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print '\t===Created'
@@ -57,6 +65,7 @@ if __name__ == "__main__":
     print '\t===Connected\n'
 
     print 'Connected to', ip, ':19999 [ ', sock_client.getsockname(), ' ]'
+    sended_data(user, True)
 
     thread.start_new_thread(recv_data, ())
     thread.start_new_thread(send_data, ())

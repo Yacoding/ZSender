@@ -7,7 +7,6 @@ import string
 
 my_key = 'ASD'
 
-# XOR
 def xor(string, key):
     data = ''
     for char in string:
@@ -16,7 +15,6 @@ def xor(string, key):
         data += char
     return data
 
-#broadcast for all sockets in SOCKET_LIST
 def broadcast(recv_socket , message , user):
     for sock in SOCKET_LIST:
         if sock != recv_socket and sock != sock_serv:
@@ -26,13 +24,16 @@ def broadcast(recv_socket , message , user):
 # main
 if __name__ == "__main__":
 
-    #all conected sockets
     SOCKET_LIST = []
+    NAME_LIST = []
+    NM_SK_DICT = {}
 
     print '=== TCP SERVER ===\n'
-    ip = str(raw_input('IP to bind: '))
+    ip = '127.0.0.1'
+    n_listen = 5
+    ##ip = str(raw_input('IP to bind: '))
     ##port = str(raw_input('Port to bind: '))
-    n_listen = int(raw_input('Number of clients: '))
+    ##n_listen = int(raw_input('Number of clients: '))
 
     print '\nServer:'
     sock_serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,6 +45,8 @@ if __name__ == "__main__":
     print '\t===listen\n'
 
     SOCKET_LIST.append(sock_serv)
+    NAME_LIST.append('server')
+    NM_SK_DICT['server']=sock_serv
 
     while 1:
         read_socks, write_socks, err_socks = select.select(SOCKET_LIST, [], [])
@@ -52,8 +55,15 @@ if __name__ == "__main__":
 
             if rsocket == sock_serv:
                 socket_conn, raddr = sock_serv.accept()
+                username_e = socket_conn.recv(256)
+                username_d = xor(username_e, my_key)
+
                 SOCKET_LIST.append(socket_conn)
-                print "== (%s, %s) is connected ==" % raddr
+                NAME_LIST.append(username_d)
+                NM_SK_DICT[username_d]=socket_conn
+
+                print "== (%s, %s): is connected ==" % raddr
+                print "username: ", str(NM_SK_DICT)
             else:
                 try:
                     data = rsocket.recv(4096)
