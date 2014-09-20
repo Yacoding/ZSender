@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
                 SOCKET_LIST.append(socket_conn)
                 NAME_LIST.append(username_d)
-                NM_SK_DICT[username_d] = socket_conn
+                NM_SK_DICT[username_d] = raddr
 
                 print "\n=> " + str(raddr) + ": is connected"
                 print "=> username: ", username_d
