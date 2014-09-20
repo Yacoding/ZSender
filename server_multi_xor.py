@@ -77,7 +77,7 @@ if __name__ == "__main__":
                 NAME_LIST.append(username_d)
                 NM_SK_DICT[username_d] = socket_conn
 
-                print "\n=> " + str(rsocket) + ": is connected"
+                print "\n=> " + str(raddr) + ": is connected"
                 print "=> username: ", username_d
                 sys.stdout.write('->')
             else:
