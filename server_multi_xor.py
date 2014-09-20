@@ -1,7 +1,9 @@
 __author__ = 'AlanVargo'
+
 import sys
 import socket
 import select
+import thread
 import threading
 import string
 
@@ -18,8 +20,19 @@ def xor(string, key):
 def broadcast(recv_socket , message , user):
     for sock in SOCKET_LIST:
         if sock != recv_socket and sock != sock_serv:
-            print str(user) + ' >> [' + message + '] broadcast...'
+            print '\n' + str(user) + ' >> [' + message + '] broadcast...'
+            sys.stdout.write('->')
             sock.send(message)
+
+def commands():
+    while 1:
+        command = str(raw_input('-> '))
+        if command == 's':
+            print '=> Stoping...'
+            thread.interrupt_main()
+            sock_serv.close()
+            break
+
 
 # main
 if __name__ == "__main__":
@@ -35,18 +48,20 @@ if __name__ == "__main__":
     ##port = str(raw_input('Port to bind: '))
     ##n_listen = int(raw_input('Number of clients: '))
 
-    print '\nServer:'
+    sys.stdout.write('Server:')
     sock_serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print '\t===created'
+    sys.stdout.write('  +created')
     sock_serv.bind((ip, 19999))
-    print '\t===bind'
+    sys.stdout.write('  +bind')
     ##sock_serv.bind((ip,port))
     sock_serv.listen(n_listen)
-    print '\t===listen\n'
+    sys.stdout.write('  +listen\n')
 
     SOCKET_LIST.append(sock_serv)
     NAME_LIST.append('server')
     NM_SK_DICT['server'] = sock_serv
+
+    thread.start_new_thread(commands, ())
 
     while 1:
         read_socks, write_socks, err_socks = select.select(SOCKET_LIST, [], [])
@@ -62,22 +77,25 @@ if __name__ == "__main__":
                 NAME_LIST.append(username_d)
                 NM_SK_DICT[username_d] = socket_conn
 
-                print "=> (%s, %s): is connected" % rsocket
+                print "\n=> " + str(rsocket) + ": is connected"
                 print "=> username: ", username_d
+                sys.stdout.write('->')
             else:
                 try:
                     data = rsocket.recv(4096)
                 except:
-                    mess = str("=> (%s, %s) disconnect" % rsocket)
+                    mess = str("=> " + str(rsocket) + ": disconnect")
                     broadcast(rsocket, mess, rsocket)
-                    print "=> (%s, %s) disconnect" % rsocket
+                    print "\n=> " + str(rsocket) + ": disconnect"
+                    sys.stdout.write('->')
                     rsocket.close()
                     SOCKET_LIST.remove(rsocket)
                     continue
 
                 if data:
                     if data == 'q':
-                        print "=> " + str(rsocket) + ": exit"
+                        print "\n=> " + str(rsocket) + ": exit"
+                        sys.stdout.write('->')
                         rsocket.close()
                         SOCKET_LIST.remove(rsocket)
                     else:

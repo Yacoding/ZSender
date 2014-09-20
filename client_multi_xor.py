@@ -19,11 +19,11 @@ def recv_data():
         try:
             recv_data = sock_client.recv(4096)
         except:
-            print 'Server closed connection'
+            print '\nServer closed connection'
             thread.interrupt_main()
             break
         if not recv_data:
-            print 'Server closed connection'
+            print '\nServer closed connection'
             thread.interrupt_main()
             break
         else:
@@ -59,9 +59,9 @@ if __name__ == "__main__":
     user = str(raw_input('Username: '))
     print '\nClient: '
     sock_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    print '\t===Created'
+    sys.stdout.write('  +Created')
     sock_client.connect((ip, 19999))
-    print '\t===Connected\n'
+    sys.stdout.write('  +Connected\n')
 
     print 'Connected to', ip, ':19999 [ ', sock_client.getsockname(), ' ]'
     sended_data(user, True)
