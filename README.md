@@ -1,4 +1,4 @@
 ZSender
 =======
 
-Test network app with sockets
+Test network app with sockets ( python chat )
