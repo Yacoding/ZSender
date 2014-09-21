@@ -54,7 +54,7 @@ def command():
         thread.interrupt_main()
         sock_client.close()
 
-def command(comm):
+def commands(comm):
     if comm == "q":
         thread.interrupt_main()
         sock_client.close()
