@@ -7,6 +7,8 @@ import thread
 import threading
 import string
 
+import cmd
+
 my_key = 'ASD'
 
 def xor(string, key):
@@ -24,7 +26,8 @@ def broadcast(recv_socket , message , user):
             sys.stdout.write('->')
             sock.send(message)
 
-def commands():
+"""
+    def commands():
     while 1:
         command = str(raw_input('-> '))
         if command == 's':
@@ -32,6 +35,7 @@ def commands():
             thread.interrupt_main()
             sock_serv.close()
             break
+"""
 
 # main
 if __name__ == "__main__":
@@ -60,7 +64,7 @@ if __name__ == "__main__":
     NAME_LIST.append('server')
     NM_SK_DICT['server'] = sock_serv
 
-    thread.start_new_thread(commands, ())
+    thread.start_new_thread(cmd.call, ())
 
     while 1:
         read_socks, write_socks, err_socks = select.select(SOCKET_LIST, [], [])
