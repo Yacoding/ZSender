@@ -54,6 +54,11 @@ def command():
         thread.interrupt_main()
         sock_client.close()
 
+def command(comm):
+    if comm == "q":
+        thread.interrupt_main()
+        sock_client.close()
+
 if __name__ == "__main__":
 
     print '=== TCP CLIENT ==='
