@@ -35,20 +35,24 @@ def recv_data():
 def send_data():
     while 1:
         send_data = str(raw_input('>> '))
-        if send_data == 'q':
-            sock_client.send(send_data)
-            thread.interrupt_main()
-            break
+        if send_data == '->':
+            command()
         else:
             send_data = xor(send_data, my_key)
             sock_client.send(send_data)
 
 def sended_data(send_data, do_crypt):
-        if do_crypt == False or not do_crypt:
-            sock_client.send(send_data)
-        elif do_crypt == True:
-            send_data = xor(send_data, my_key)
-            sock_client.send(send_data)
+    if do_crypt == False or not do_crypt:
+        sock_client.send(send_data)
+    elif do_crypt == True:
+        send_data = xor(send_data, my_key)
+        sock_client.send(send_data)
+
+def command():
+    command = str(raw_input('-> '))
+    if command == "q":
+        thread.interrupt_main()
+        sock_client.close()
 
 if __name__ == "__main__":
 

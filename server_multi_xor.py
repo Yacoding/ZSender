@@ -33,7 +33,6 @@ def commands():
             sock_serv.close()
             break
 
-
 # main
 if __name__ == "__main__":
 
