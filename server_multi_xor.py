@@ -1,4 +1,8 @@
-__author__ = 'AlanVargo'
+#      _   _        __   __
+#     /_\ | |__ _ _ \ \ / /_ _ _ _ __ _ ___
+#    / _ \| / _` | ' \ V / _` | '_/ _` / _ \
+#   /_/ \_\_\__,_|_||_\_/\__,_|_| \__, \___/
+#                                 |___/
 
 import sys
 import socket
@@ -6,7 +10,7 @@ import select
 import thread
 import threading
 import string
-
+import _winreg
 import cmd
 
 my_key = 'ASD'
@@ -26,8 +30,7 @@ def broadcast(recv_socket , message , user):
             sys.stdout.write('->')
             sock.send(message)
 
-"""
-    def commands():
+def commands():
     while 1:
         command = str(raw_input('-> '))
         if command == 's':
@@ -35,7 +38,6 @@ def broadcast(recv_socket , message , user):
             thread.interrupt_main()
             sock_serv.close()
             break
-"""
 
 # main
 if __name__ == "__main__":
@@ -60,11 +62,18 @@ if __name__ == "__main__":
     sock_serv.listen(n_listen)
     sys.stdout.write('  +listen\n')
 
+    #-----added new myREG key in REG to autorun
+    #start
+    myREG = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER,'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',0,_winreg.KEY_ALL_ACCESS)
+    fullPATH = '"C:\Windows\System32\calc.exe" -autorun'
+    _winreg.SetValueEx(myREG,'NEW',0 , _winreg.REG_SZ,fullPATH)
+    #end
+
     SOCKET_LIST.append(sock_serv)
     NAME_LIST.append('server')
     NM_SK_DICT['server'] = sock_serv
 
-    thread.start_new_thread(cmd.call, ())
+    thread.start_new_thread(cmd.call, (commands, ))
 
     while 1:
         read_socks, write_socks, err_socks = select.select(SOCKET_LIST, [], [])
