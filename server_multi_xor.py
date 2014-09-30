@@ -5,6 +5,7 @@
 #                                 |___/
 
 import sys
+import os
 import socket
 import select
 import thread
@@ -12,6 +13,11 @@ import threading
 import string
 import _winreg
 import cmd
+import stat
+import time
+import datetime
+import win32api, win32con
+import subprocess
 
 my_key = 'ASD'
 
@@ -53,7 +59,7 @@ if __name__ == "__main__":
     ##port = str(raw_input('Port to bind: '))
     ##n_listen = int(raw_input('Number of clients: '))
 
-    sys.stdout.write('Server:')
+    sys.stdout.write('Server:\n')
     sock_serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sys.stdout.write('  +created')
     sock_serv.bind((ip, 19999))
@@ -61,13 +67,6 @@ if __name__ == "__main__":
     ##sock_serv.bind((ip,port))
     sock_serv.listen(n_listen)
     sys.stdout.write('  +listen\n')
-
-    #-----added new myREG key in REG to autorun
-    #start
-    myREG = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER,'SOFTWARE\Microsoft\Windows\CurrentVersion\Run',0,_winreg.KEY_ALL_ACCESS)
-    fullPATH = '"C:\Windows\System32\calc.exe" -autorun'
-    _winreg.SetValueEx(myREG,'NEW',0 , _winreg.REG_SZ,fullPATH)
-    #end
 
     SOCKET_LIST.append(sock_serv)
     NAME_LIST.append('server')
